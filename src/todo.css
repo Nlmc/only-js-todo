@@ -1,0 +1,52 @@
+body {
+  font-family: 'Raleway', sans-serif;
+}
+.clearfix {
+  overflow: auto;
+}
+
+#todo-wrapper {
+  width: 500px;
+  border: solid 2px black;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.task {
+  background-color: crimson;
+  padding: 5px 0;
+  list-style: none;
+  margin: 10px 5px;
+  overflow: hidden;
+}
+
+.task p {
+  height: 0;
+  margin: 0;
+}
+.deleteButton {
+  background: none;
+  color: #cccccc;
+  border: none;
+  cursor: pointer;
+  float: right;
+  margin-right: 10px;
+  font-weight: 900;
+}
+.doneButton {
+  background: none;
+  color: #cccccc;
+  border: none;
+  cursor: pointer;
+  float: right;
+  margin-right: 10px;
+  font-weight: 900;
+}
+
+.editButton{
+  float: right;
+  margin-right: 5px;
+}
+
+
+/* eElement.insertBefore(newFirstElement, eElement.firstChild); */
