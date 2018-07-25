@@ -39,20 +39,20 @@ function remove(e) {
 function done() {
   const taskWrapper = this.parentNode;
   const task = taskWrapper.firstChild.innerHTML;
-  const color = taskWrapper.style.backgroundColor;
   const id = taskWrapper.dataset.id;
-  const status = taskWrapper.dataset.done;
-  // const status = 'true' === taskWrapper.dataset.status;
+  let status = taskWrapper.dataset.done;
   if (status === 'true') {
     taskWrapper.style.backgroundColor = 'crimson';
     this.innerHTML = 'Done';
     taskWrapper.dataset.done = false;
+    status = taskWrapper.dataset.done;
     apiCall('/todo', 'put', { id, value: task, done: status });
   } else if (status === 'false') {
     console.log(status);
     taskWrapper.style.backgroundColor = 'aquamarine';
     this.innerHTML = 'Undone';
     taskWrapper.dataset.done = true;
+    status = taskWrapper.dataset.done;
     apiCall('/todo', 'put', { id, value: task, done: status });
   }
 }
@@ -64,17 +64,17 @@ function edit() {
   const id = field.parentNode.dataset.id;
   const done = field.parentNode.dataset.done;
   console.log(`id : ${id}, newtask : ${newTask}`);
-  if (event.keyCode == 13) {
+  if (event.keyCode === 13) {
 
     new Promise(((resolve, reject) => {
       try {
-        apiCall('/todo', 'put', { value: newTask, id, done});
+        apiCall('/todo', 'put', { value: newTask, id, done });
         resolve(field.value);
       } catch (e) {
         reject(e.message);
       }
     })).then((value) => {
-        field.parentNode.firstChild.innerHTML = value;
+      field.parentNode.firstChild.innerHTML = value;
     });
     field.style.display = 'none';
   }
@@ -106,7 +106,7 @@ const display = (value, id, status) => {
   task.appendChild(newContent);
   taskwrapper.className = 'task clearfix';
   taskwrapper.dataset.id = id;
-  taskwrapper.dataset.done = status ? status : 'false';
+  taskwrapper.dataset.done = status || 'false';
   status == 'true' ? taskwrapper.style.backgroundColor = 'aquamarine' : '';
   status == 'true' ? doneButton.innerHTML = 'Undone' : doneButton.innerHTML = 'Done';
   taskwrapper.appendChild(task);
@@ -118,24 +118,21 @@ const display = (value, id, status) => {
   input.value = '';
 };
 
-
 input.addEventListener('keypress', (event) => {
   if (event.keyCode === 13 && input.value !== '') {
     const task = input.value;
-    console.log(task);
+    // const prom = new Promise();
     new Promise((resolve, reject) => {
       try {
         apiCall('/todo', 'post', { value: task })
           .then((json) => {
             const id = json.id;
             resolve(display(task, id));
-          })
-
+          });
       } catch (e) {
-          reject(e.message);
+        reject(e.message);
       }
     });
-
   }
 });
 
