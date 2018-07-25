@@ -34,7 +34,6 @@ module.exports = {
     const data = db.get('tasks')
       .find({id: postID})
       .value();
-
     return data;
   },
   saveData(value) {
