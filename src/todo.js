@@ -4,12 +4,12 @@ const todo = document.getElementById('todo-wrapper');
 const wrapper = document.getElementById('todo-wrapper');
 
 const apiCall = (url, method, body) => fetch(url, {
-    method,
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  }).then(res => res.json());
+  method,
+  headers: {
+    'Content-type': 'application/json',
+  },
+  body: JSON.stringify(body),
+}).then(res => res.json());
 
 function showfield() {
   const btn = event.target;
@@ -20,18 +20,9 @@ function showfield() {
 function remove(e) {
   const task = e.target.parentNode;
   let id = task.dataset.id;
-  new Promise((resolve, reject) => {
-    try {
-      apiCall('/todo','delete', { id })
-        .then((json) => {
-          const id = json.id;
-          resolve(display(task, id));
-        });
-      resolve(domRemove(task));
-    } catch (e) {
-      reject(e.message);
-    }
-});
+  console.log(id + ' iddddddddd');
+  const datas = apiCall('/todo', 'delete', { id });
+  domRemove(task);
 }
 
 
@@ -107,8 +98,8 @@ const display = (value, id, status) => {
   taskwrapper.className = 'task clearfix';
   taskwrapper.dataset.id = id;
   taskwrapper.dataset.done = status || 'false';
-  status == 'true' ? taskwrapper.style.backgroundColor = 'aquamarine' : '';
-  status == 'true' ? doneButton.innerHTML = 'Undone' : doneButton.innerHTML = 'Done';
+  status === 'true' ? taskwrapper.style.backgroundColor = 'aquamarine' : '';
+  status === 'true' ? doneButton.innerHTML = 'Undone' : doneButton.innerHTML = 'Done';
   taskwrapper.appendChild(task);
   taskwrapper.appendChild(deleteButton);
   taskwrapper.appendChild(doneButton);
