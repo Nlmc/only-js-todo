@@ -6,7 +6,9 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "start": "npm run build && node app.js",
+    "lint": "./node_modules/.bin/eslint ./src"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +24,7 @@
     "@babel/core": "^7.0.0-beta.54",
     "@babel/preset-env": "^7.0.0-beta.54",
     "babel-cli": "^6.26.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-loader": "^7.1.5",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
