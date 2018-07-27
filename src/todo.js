@@ -8,20 +8,21 @@ const apiCall = (url, method, body) => fetch(url, {
   headers: {
     'Content-type': 'application/json',
   },
-  body: JSON.stringify(body),
-}).then(res => res.json());
+  body,
+});
 
 function showfield() {
+  console.log('oué');
   const btn = event.target;
   const field = btn.previousSibling;
   field.style.display = 'inline-block';
 }
 
 function remove(e) {
+  console.log('fuck it');
   const task = e.target.parentNode;
-  let id = task.dataset.id;
-  console.log(id + ' iddddddddd');
-  const datas = apiCall('/todo', 'delete', { id });
+  const id = task.dataset.id;
+  apiCall('/todo', 'delete', { id }).catch((err) => { console.log(err); });
   domRemove(task);
 }
 
@@ -112,18 +113,11 @@ const display = (value, id, status) => {
 input.addEventListener('keypress', (event) => {
   if (event.keyCode === 13 && input.value !== '') {
     const task = input.value;
-    // const prom = new Promise();
-    new Promise((resolve, reject) => {
-      try {
-        apiCall('/todo', 'post', { value: task })
-          .then((json) => {
-            const id = json.id;
-            resolve(display(task, id));
-          });
-      } catch (e) {
-        reject(e.message);
-      }
-    });
+    apiCall('/todo', 'post', { value: task })
+      .then((json) => {
+        const id = json.id;
+        resolve(display(task, id));
+      });
   }
 });
 
@@ -133,12 +127,13 @@ button.addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   apiCall('/todo', 'get')
-    .then((json) => {
-      console.log('json', json);
-      for (let i = 0; i < json.length; i += 1) {
-        display(json[i].title, json[i].id, json[i].done);
+    .then(res.json()).catch((err) => { console.log(err); })
+    .then((data) => {
+      for (let i = 0; i < data.length; i += 1) {
+        display(data[i].title, data[i].id, data[i].done);
       }
-    });
+    })
+    .catch((err) => { console.log(err); });
 });
 
 function domRemove(task) {
